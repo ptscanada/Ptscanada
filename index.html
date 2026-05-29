@@ -128,26 +128,20 @@
 
   .arrow {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
+    bottom: 0;
     z-index: 10;
-    background: rgba(0,0,0,0.3);
-    border: 1.5px solid rgba(255,255,255,0.4);
-    color: #fff;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    font-size: 1.2rem;
+    width: 80px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.25s, border-color 0.25s;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
     user-select: none;
   }
-  .arrow:hover { background: rgba(0,0,0,0.6); border-color: #fff; }
-  .arrow-left  { left: 20px; }
-  .arrow-right { right: 20px; }
+  .arrow-left  { left: 0; }
+  .arrow-right { right: 0; }
 
   .subscribe-section { background:#0a0a0a; padding:60px 24px 50px; text-align:center; }
   .subscribe-section h2 {
@@ -197,8 +191,8 @@
   <div class="slide" style="background-image:url('slide3.jpg')"><div class="slide-overlay"></div></div>
   <div class="slide" style="background-image:url('slide4.jpg')"><div class="slide-overlay"></div></div>
 
-  <div class="arrow arrow-left" onclick="prevSlide()">&#8592;</div>
-  <div class="arrow arrow-right" onclick="nextSlide()">&#8594;</div>
+  <div class="arrow arrow-left" onclick="prevSlide()"></div>
+  <div class="arrow arrow-right" onclick="nextSlide()"></div>
 
   <div class="slide-text">
     <h1>Under<br>Maintenance...</h1>
@@ -227,7 +221,7 @@
   let current = 0;
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
-  let autoPlay = setInterval(() => nextSlide(), 4000);
+
 
   function goTo(n) {
     slides[current].classList.remove('active');
@@ -239,14 +233,6 @@
 
   function nextSlide() { goTo(current + 1); }
   function prevSlide() { goTo(current - 1); }
-
-  // Reset autoplay timer on manual navigation
-  document.querySelectorAll('.arrow, .dot').forEach(el => {
-    el.addEventListener('click', () => {
-      clearInterval(autoPlay);
-      autoPlay = setInterval(() => nextSlide(), 4000);
-    });
-  });
 
   // Swipe support for mobile
   let touchStartX = 0;
