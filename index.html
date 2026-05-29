@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ptscanada</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0a; color:#fff; font-family:'Barlow', sans-serif; font-weight:300; }
+
+  .slideshow {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    background-size: cover;
+    background-position: center;
+  }
+  .slide.active { opacity: 1; }
+  .slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.42); }
+
+  .logo-bar {
+    position: absolute;
+    top: 28px;
+    left: 36px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+  }
+  .logo-bar img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  }
+  .logo-bar span {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  }
+
+  .slide-text {
+    position: absolute;
+    bottom: 160px;
+    left: 40px;
+    z-index: 5;
+  }
+  @media(max-width:600px) { .slide-text { bottom:120px; left:24px; right:24px; } }
+  .slide-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    line-height: 1.1;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 14px;
+  }
+  .dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.75);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .dot.active { background: #fff; }
+
+  .subscribe-section { background:#0a0a0a; padding:60px 24px 50px; text-align:center; }
+  .subscribe-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    letter-spacing: .1em;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  .email-field {
+    display: block; width:100%; max-width:480px; margin:0 auto 16px;
+    background: transparent; border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.35);
+    color: #fff; font-family:'Barlow',sans-serif; font-size:.95rem;
+    padding: 12px 4px; outline: none; transition: border-color .2s; text-align:left;
+  }
+  .email-field::placeholder { color: rgba(255,255,255,0.45); }
+  .email-field:focus { border-bottom-color: #fff; }
+
+  .signup-btn {
+    display: block; width:100%; max-width:480px; margin:12px auto 0;
+    background: transparent; border: 1.5px solid #fff; border-radius: 50px;
+    color: #fff; font-family:'Barlow',sans-serif; font-size:.85rem;
+    letter-spacing:.2em; text-transform:uppercase; padding:16px 32px;
+    cursor: pointer; transition: background .25s, color .25s;
+  }
+  .signup-btn:hover { background:#fff; color:#0a0a0a; }
+
+  .success-msg { display:none; color:rgba(255,255,255,0.6); font-size:.85rem; letter-spacing:.15em; text-transform:uppercase; margin-top:20px; }
+
+  footer { background:#0a0a0a; padding:24px; text-align:center; border-top:1px solid #1a1a1a; }
+  footer p { font-size:.75rem; color:rgba(255,255,255,0.35); letter-spacing:.05em; }
+</style>
+</head>
+<body>
+
+<div class="slideshow">
+  <div class="logo-bar">
+    <img src="logo.png" alt="PTS Canada logo">
+    <span>pts canada</span>
+  </div>
+
+  <div class="slide active" style="background-image:url('slide1.jpg')"><div class="slide-overlay"></div></div>
+  <div class="slide" style="background-image:url('slide2.jpg')"><div class="slide-overlay"></div></div>
+  <div class="slide" style="background-image:url('slide3.jpg')"><div class="slide-overlay"></div></div>
+  <div class="slide" style="background-image:url('slide4.jpg')"><div class="slide-overlay"></div></div>
+
+  <div class="slide-text">
+    <h1>Under<br>Maintenance...</h1>
+  </div>
+
+  <div class="dots">
+    <div class="dot active" onclick="goTo(0)"></div>
+    <div class="dot" onclick="goTo(1)"></div>
+    <div class="dot" onclick="goTo(2)"></div>
+    <div class="dot" onclick="goTo(3)"></div>
+  </div>
+</div>
+
+<div class="subscribe-section">
+  <h2>Subscribe</h2>
+  <input class="email-field" type="email" id="emailInput" placeholder="Email">
+  <button class="signup-btn" onclick="handleSignup()">Sign up</button>
+  <p class="success-msg" id="successMsg">&#10003; You're subscribed!</p>
+</div>
+
+<footer>
+  <p>Copyright &copy; 2026 ptscanada - All Rights Reserved.</p>
+</footer>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  setInterval(() => goTo((current + 1) % slides.length), 4000);
+
+  function handleSignup() {
+    const input = document.getElementById('emailInput');
+    const msg = document.getElementById('successMsg');
+    if (input.value && input.value.includes('@')) {
+      input.style.display = 'none';
+      document.querySelector('.signup-btn').style.display = 'none';
+      msg.style.display = 'block';
+    } else {
+      input.style.borderBottomColor = '#e74c3c';
+    }
+  }
+
+  document.getElementById('emailInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') handleSignup();
+  });
+</script>
+</body>
+</html>
